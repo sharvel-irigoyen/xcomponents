@@ -86,7 +86,7 @@
                     <div class="custom-control custom-checkbox">
                         <x-checkbox id="remember_me" name="remember" />
                         <label class="custom-control-label" for="remember_me">
-                            {{ __('Remember Me') }}
+                            {{ __('Remember me') }}
                         </label>
                     </div>
                 </div>

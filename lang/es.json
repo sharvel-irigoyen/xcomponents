@@ -162,6 +162,8 @@
     "Multi-Status": "Multiestado",
     "Multiple Choices": "Múltiples opciones",
     "Name": "Nombre",
+    "Lastname": "Apellidos",
+    "Phone": "Teléfono",
     "Network Authentication Required": "Se requiere autenticación de red",
     "Network Connect Timeout Error": "Error de tiempo de espera de conexión de red",
     "Network Read Timeout Error": "Error de tiempo de espera de lectura de red",

@@ -66,7 +66,7 @@
             <x-authentication-card-logo />
         </x-slot>
 
-        <x-validation-errors class="mb-3" />
+        {{-- <x-validation-errors class="mb-3" /> --}}
 
         <div class="card-body">
             <form method="POST" action="{{ route('register') }}">
@@ -78,6 +78,20 @@
                     <x-input class="{{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name"
                                  :value="old('name')" required autofocus autocomplete="name" />
                     <x-input-error for="name"></x-input-error>
+                </div>
+                <div class="mb-3">
+                    <x-label value="{{ __('Lastname') }}" />
+
+                    <x-input class="{{ $errors->has('lastname') ? 'is-invalid' : '' }}" type="text" name="lastname"
+                                 :value="old('lastname')" required autofocus autocomplete="lastname" />
+                    <x-input-error for="lastname"></x-input-error>
+                </div>
+                <div class="mb-3">
+                    <x-label value="{{ __('Phone') }}" />
+
+                    <x-input class="{{ $errors->has('phone') ? 'is-invalid' : '' }}" type="text" name="phone"
+                                 :value="old('phone')" required autofocus autocomplete="phone" />
+                    <x-input-error for="phone"></x-input-error>
                 </div>
 
                 <div class="mb-3">
