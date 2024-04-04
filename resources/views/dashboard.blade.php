@@ -3,7 +3,8 @@
         <h2 class="h5 font-weight-bold">
             {{ __('Dashboard') }}
         </h2>
+
     </x-slot>
 
-    <x-welcome />
+    {{ config('app.faker_locale') }}
 </x-app-layout>
