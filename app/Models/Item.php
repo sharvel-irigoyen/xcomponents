@@ -23,6 +23,10 @@ class Item extends Model
     {
         return $this->hasMany(CustomerItem::class);
     }
+    public function itemPics(): HasMany
+    {
+        return $this->hasMany(ItemPic::class);
+    }
 
     public function shoppingCartDetails(): HasMany
     {

@@ -25,4 +25,5 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+    Route::view('user-items', 'user-items')->name('user-items');
 });
