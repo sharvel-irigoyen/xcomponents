@@ -15,7 +15,7 @@
                     <th>Precio</th>
                     <th>
                         <button class="btn btn-outline-success btn-sm" data-bs-toggle="modal"
-                            data-bs-target="#add-modal-customer"><i class="fa-solid fa-plus"></i></button>
+                            data-bs-target="#add-modal-customer-item"><i class="fa-solid fa-plus"></i></button>
                     </th>
                 </tr>
             </thead>
@@ -23,13 +23,14 @@
                 @forelse ($customerItems as $customerItem)
                     <tr wire:key="{{ $customerItem->id }}">
                         <th>{{ $customerItem->item->id }}</th>
-                        <th><img style="width: 50px" src="{{ asset($customerItem->item->itemPics->first()?->url) }}" /></th>
+                        <th><img style="width: 50px" src="{{ asset($customerItem->item->itemPics->first()?->url) }}" />
+                        </th>
                         <th>{{ $customerItem->item->category->name }}</th>
                         <th>{{ $customerItem->item->name }}</th>
                         <th>{{ $customerItem->item->description }}</th>
                         <th>{{ $customerItem->item->stock }}</th>
                         <th>{{ $customerItem->item->price }}</th>
-                        <td> <button data-bs-toggle="modal" data-bs-target="#edit-modal-{{ $customerItem->id }}"
+                        <td> <button data-bs-toggle="modal" data-bs-target="#edit-modal-customer-item-{{ $customerItem->id }}"
                                 type="button" class="btn btn-sm btn-outline-primary"><i
                                     class="fa-regular fa-pen-to-square"></i></button>
 
@@ -37,7 +38,7 @@
                                 class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-trash-can"></i></button>
                         </td>
 
-                        {{-- <livewire:customer.edit-modal :$customer :key="$customer->id" @customer-saved="$refresh" /> --}}
+                        <livewire:customer-item.edit-modal :$customerItem :key="'edit-' . $customerItem->id" @customer-item-saved="$refresh" />
                     </tr>
                 @empty
                     <tr>
@@ -51,5 +52,5 @@
 
     {{ $customerItems->onEachSide(0)->links() }}
 
-    {{-- <livewire:customer.add-modal @customer-saved="$refresh" /> --}}
+    <livewire:customer-item.add-modal @customer-item-saved="$refresh" />
 </div>
