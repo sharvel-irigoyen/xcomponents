@@ -18,6 +18,8 @@ class Table extends Component
     ];
 
     public ShoppingCartDetail $shoppingCartDetail;
+    public $totalPrice;
+
     public function deleteConfirmation(ShoppingCartDetail $shoppingCartDetail)
     {
         $this->shoppingCartDetail=$shoppingCartDetail;
@@ -45,7 +47,7 @@ class Table extends Component
                     'timerProgressBar' => true,
                     'timer' => 1500,
                 ]);
-            } else{
+            } else {
                 $this->shoppingCartDetail->item->customerItems->first()->restore();
                 $this->shoppingCartDetail->delete();
 
@@ -69,13 +71,28 @@ class Table extends Component
             }
         }
     }
+    public function updatePrice()
+    {
+
+        $shoppingCartDetails = ShoppingCart::where('user_id', Auth::user()->id)->first()->shoppingCartDetails;
+
+        $totalStorePrice = $shoppingCartDetails->where('item.owner', 'Tienda')->sum('item.price');
+        $totalCustomerPrice =  $shoppingCartDetails->where('item.owner', 'Cliente')->sum('item.price');
+
+        $totalPrice = $totalStorePrice - $totalCustomerPrice;
+        $shoppingCartDetails->first()->shoppingCart->update([
+            'total_price' => $totalPrice
+        ]);
+
+    }
     public function render()
     {
+        $this->updatePrice();
         $data=[
-            'shoppingCartDetails'=>ShoppingCart::where('user_id', Auth::user()->id)->first()->shoppingCartDetails()->orderBy('updated_at','desc')
+            'shoppingCartDetails'=>ShoppingCart::where('user_id', Auth::user()->id)->first()->shoppingCartDetails()->orderBy('updated_at', 'desc')
             ->paginate(10),
             'shoppingCart'=>ShoppingCart::where('user_id', Auth::user()->id)->first(),
         ];
-        return view('livewire.customer-shopping-cart.table',$data);
+        return view('livewire.customer-shopping-cart.table', $data);
     }
 }

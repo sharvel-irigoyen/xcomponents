@@ -13,6 +13,9 @@ class ShoppingCartDetail extends Model
     public function item(): BelongsTo
     {
         return $this->belongsTo(Item::class)->withTrashed();
-
+    }
+    public function shoppingCart(): BelongsTo
+    {
+        return $this->belongsTo(ShoppingCart::class);
     }
 }

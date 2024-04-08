@@ -29,7 +29,8 @@
                         <th>{{ $shoppingCartDetail->item->name }}</th>
                         <th>{{ $shoppingCartDetail->item->description }}</th>
                         <th>{{ $shoppingCartDetail->item->stock }}</th>
-                        <th>{{ $shoppingCartDetail->item->owner == 'Cliente' ? '-' : '+' }}{{ $shoppingCartDetail->item->price }}
+                        <th class="{{ $shoppingCartDetail->item->owner == 'Cliente' ? 'text-danger' : 'text-success' }}">
+                            {{ $shoppingCartDetail->item->owner == 'Cliente' ? '-' : '+' }}{{ $shoppingCartDetail->item->price }}
                         </th>
                         <td>
                             <button wire:click="deleteConfirmation({{ $shoppingCartDetail->id }})" type="button"
@@ -48,8 +49,10 @@
 
     {{ $shoppingCartDetails->onEachSide(0)->links() }}
 
-    <div class="d-flex justify-content-end mt-5">
-        <p class="d-inline-block fs-4 fw-bold">Total: {{ $shoppingCart->total_price }}</p>
+    <div class="text-end">
+        <p class="fs-4 fw-bold">Total: {{ $shoppingCart->total_price }}</p>
+        <button type="button" class="btn btn-primary btn-lg">
+            Pagar
+        </button>
     </div>
-
 </div>
