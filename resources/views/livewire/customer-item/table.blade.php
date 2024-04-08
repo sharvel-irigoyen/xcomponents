@@ -30,7 +30,10 @@
                         <th>{{ $customerItem->item->description }}</th>
                         <th>{{ $customerItem->item->stock }}</th>
                         <th>{{ $customerItem->item->price }}</th>
-                        <td> <button data-bs-toggle="modal" data-bs-target="#edit-modal-customer-item-{{ $customerItem->id }}"
+                        <td>
+                            <button wire:click="addCart({{ $customerItem->id }})" type="button"
+                                class="btn btn-sm btn-outline-warning"><i class="fa-solid fa-cart-plus"></i></button>
+                            <button data-bs-toggle="modal" data-bs-target="#edit-modal-customer-item-{{ $customerItem->id }}"
                                 type="button" class="btn btn-sm btn-outline-primary"><i
                                     class="fa-regular fa-pen-to-square"></i></button>
 

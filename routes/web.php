@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\StoreController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,13 +18,12 @@ Route::get('/', function () {
     return view('home');
 });
 
+Route::get('store', [StoreController::class, 'index'])->name('store.index');
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::view('user-shopping-cart', 'user-shopping-cart')->name('user.shopping.cart');
     Route::view('user-items', 'user-items')->name('user-items');
 });

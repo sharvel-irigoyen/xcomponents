@@ -13,7 +13,7 @@ class Item extends Model
     use HasFactory;
     use SoftDeletes;
     protected $guarded=[];
-    // protected $with=['shoppingCartDetails'];
+    protected $with=['customerItems'];
 
     public function category(): BelongsTo
     {
@@ -21,7 +21,7 @@ class Item extends Model
     }
     public function customerItems(): HasMany
     {
-        return $this->hasMany(CustomerItem::class);
+        return $this->hasMany(CustomerItem::class)->withTrashed();
     }
     public function itemPics(): HasMany
     {

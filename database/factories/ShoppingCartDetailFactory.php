@@ -18,7 +18,7 @@ class ShoppingCartDetailFactory extends Factory
 
         // Obtener los IDs de los items relacionados con el usuario
         $itemCustomerIds = CustomerItem::where('user_id', $userId)->pluck('item_id')->toArray();
-        $itemStoreIds = Item::where('owner', 'Tienda')->pluck('id')->toArray();
+        $itemStoreIds = Item::where('owner', 'Tienda')->inRandomOrder()->take(3)->pluck('id')->toArray();
         $itemIds = array_merge($itemCustomerIds, $itemStoreIds);
         $itemId = $this->faker->randomElement($itemIds);
 
@@ -36,6 +36,10 @@ class ShoppingCartDetailFactory extends Factory
         // Verificar si el item existe y eliminarlo
         if (Item::where('id', $itemId)->exists()) {
             Item::find($itemId)->delete();
+        }
+        // Verificar si el item existe en customerItems eliminarlo
+        if (CustomerItem::where('item_id', $itemId)->exists()) {
+            CustomerItem::where('item_id', $itemId)->delete();
         }
 
         return [

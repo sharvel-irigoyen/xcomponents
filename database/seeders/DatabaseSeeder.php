@@ -48,7 +48,7 @@ class DatabaseSeeder extends Seeder
             Item::factory(300)->create();
         }
         if (ItemPic::count() === 0) {
-            ItemPic::factory(70)->create();
+            ItemPic::factory(600)->create();
         }
         if (CustomerItem::count() === 0) {
             CustomerItem::factory(40)->create();

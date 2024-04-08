@@ -13,7 +13,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav me-auto">
-                <x-nav-link class="text-white" href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')" wire:navigate.hover>
+                <x-nav-link class="text-white" href="{{ route('store.index') }}" :active="request()->routeIs('store.index')" wire:navigate.hover>
                     Tienda
                 </x-nav-link>
             </ul>
@@ -34,10 +34,12 @@
                 <!-- Settings Dropdown -->
                 @auth
                     <ul class="navbar-nav me-auto">
-                        <x-nav-link class="text-white" href="{{ route('user-items') }}" :active="request()->routeIs('login')" wire:navigate.hover>
+                        <x-nav-link class="text-white" href="{{ route('user-items') }}" :active="request()->routeIs('user-items')"
+                            wire:navigate.hover>
                             <i class="fa-solid fa-table-list me-1"></i>Mis productos
                         </x-nav-link>
-                        <x-nav-link class="text-white" href="{{ route('register') }}" :active="request()->routeIs('register')" wire:navigate.hover>
+                        <x-nav-link class="text-white" href="{{ route('user.shopping.cart') }}" :active="request()->routeIs('user.shopping.cart')"
+                            wire:navigate.hover>
                             <i class="fa-solid fa-cart-shopping me-2"></i>Carrito
                         </x-nav-link>
                     </ul>
@@ -79,7 +81,7 @@
                             <!-- Authentication -->
                             <x-dropdown-link href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
-                                                         document.getElementById('logout-form').submit();" wire:navigate.hover>
+                                                         document.getElementById('logout-form').submit();">
                                 {{ __('Log out') }}
                             </x-dropdown-link>
                             <form method="POST" id="logout-form" action="{{ route('logout') }}">
