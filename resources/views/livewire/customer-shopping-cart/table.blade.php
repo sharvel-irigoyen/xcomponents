@@ -51,8 +51,31 @@
 
     <div class="text-end">
         <p class="fs-4 fw-bold">Total: {{ $shoppingCart->total_price }}</p>
-        <button type="button" class="btn btn-primary btn-lg">
+        <button type="button" onclick="openForm()" class="btn btn-primary btn-lg">
             Pagar
         </button>
     </div>
+    @push('scripts')
+        <script type="text/javascript" src="{{ config('services.niubiz.url_js') }}"></script>
+        <script type="text/javascript">
+            function openForm() {
+                VisanetCheckout.configure({
+                    sessiontoken: '{{ $sessionToken }}',
+                    channel: 'web',
+                    merchantid: "{{ config('services.niubiz.merchant_id') }}",
+                    purchasenumber: {{ $shoppingCart->id }},
+                    amount: {{ $shoppingCart->total_price }},
+                    expirationminutes: '20',
+                    timeouturl: 'about:blank',
+                    merchantlogo: "{{ asset('img/logo.png') }}",
+                    formbuttoncolor: '#000000',
+                    action: 'paginaRespuesta',
+                    complete: function(params) {
+                        alert(JSON.stringify(params));
+                    }
+                });
+                VisanetCheckout.open();
+            }
+        </script>
+    @endpush
 </div>

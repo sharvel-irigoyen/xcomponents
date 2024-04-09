@@ -5,6 +5,7 @@ namespace App\Livewire\CustomerShoppingCart;
 use App\Models\ShoppingCart;
 use App\Models\ShoppingCartDetail;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -85,6 +86,37 @@ class Table extends Component
         ]);
 
     }
+
+    public function generateSessionToken()
+    {
+        $auth= base64_encode(config('services.niubiz.user'). ':' . config('services.niubiz.password'));
+        $accessToken=Http::withHeaders([
+            'Authorization' =>"Basic $auth",
+        ])
+        ->get(config('services.niubiz.url_api'). '/api.security/v1/security')
+        ->body();
+
+        $sessionToken=Http::withHeaders([
+            'Authorization' =>$accessToken,
+            'Content-Type' => 'application/json',
+        ])
+        ->post(config('services.niubiz.url_api').'/api.ecommerce/v2/ecommerce/token/session/'.config('services.niubiz.merchant_id'), [
+            'channel' =>'web',
+            'amount' =>100,
+            "antifraud"=> [
+                "clientIp"=>request()->ip(),
+                "merchantDefineData"=> [
+                "MDD4"=> auth()->user()->email,
+                "MDD21"=> 0,
+                "MDD32"=> auth()->user()->id,
+                "MDD75"=> "Registrado",
+                "MDD77"=> now()->diffInDays(auth()->user()->created_at)+1,
+                ]
+            ]
+        ])->json();
+
+        return $sessionToken['sessionKey'];
+    }
     public function render()
     {
         $this->updatePrice();
@@ -92,6 +124,7 @@ class Table extends Component
             'shoppingCartDetails'=>ShoppingCart::where('user_id', Auth::user()->id)->first()->shoppingCartDetails()->orderBy('updated_at', 'desc')
             ->paginate(10),
             'shoppingCart'=>ShoppingCart::where('user_id', Auth::user()->id)->first(),
+            'sessionToken'=>$this->generateSessionToken(),
         ];
         return view('livewire.customer-shopping-cart.table', $data);
     }
