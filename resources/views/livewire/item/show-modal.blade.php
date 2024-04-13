@@ -4,7 +4,6 @@
         <x-slot name="header">
             <h3 class="fs-2 fw-bold">{{ $item->name }}</h3>
         </x-slot>
-
         <x-slot name="body">
             <div class="row align-items-center">
                 <div class="col-lg-6 fs-5">
@@ -13,11 +12,11 @@
                     <p>Stock: {{ $item->stock }}</p>
                     <p>Precio: S/.{{ $item->price }}</p>
                     @auth
-                        <div class="text-center mt-5">
-                            <button wire:click='addCart' type="button" class="btn btn-success"><i class="fa-solid fa-cart-plus"></i>Agregar al
+                        <div class="text-center mt-5 mb-3 mb-lg-0">
+                            <button wire:click='addCart({{ $item->id }})' type="button" class="btn btn-success"><i
+                                    class="fa-solid fa-cart-plus"></i>Agregar al
                                 carrito</button>
                         </div>
-
                     @endauth
                 </div>
                 <div class="col-lg-6">
@@ -32,7 +31,6 @@
                                     <img src="{{ asset('img/not-found.jpeg') }}" class="d-block w-100" alt="...">
                                 </div>
                             @endforelse
-
                         </div>
                         <button class="carousel-control-prev" type="button"
                             data-bs-target="#carousel-{{ $item->id }}" data-bs-slide="prev">
@@ -47,9 +45,6 @@
                     </div>
                 </div>
             </div>
-
-
         </x-slot>
     </x-bs.modal>
-
 </div>
