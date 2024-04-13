@@ -84,7 +84,6 @@ class Table extends Component
         $shoppingCartDetails->first()->shoppingCart->update([
             'total_price' => $totalPrice
         ]);
-
     }
 
     public function generateSessionToken()

@@ -1,4 +1,4 @@
-<div class="mt-4">
+<div class="my-4">
     <div class="d-flex align-items-center justify-content-between">
         <div class="fs-4 fw-semibold">Mi carrito</div>
     </div>
