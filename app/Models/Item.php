@@ -32,4 +32,30 @@ class Item extends Model
     {
         return $this->hasMany(ShoppingCartDetail::class);
     }
+
+    public function scopeFilter($query, $filters)
+    {
+        $query->when($filters['name'], function ($query, $name) {
+            $names = explode(' ', $name);
+
+            foreach ($names as $na) {
+                $query->where('name', 'like', '%' . $na . '%');
+            }
+        })
+
+        ->when($filters['description'], function ($query, $description) {
+            $descriptions = explode(' ', $description);
+
+            foreach ($descriptions as $des) {
+                $query->where('description', 'like', '%' . $des . '%');
+            }
+        })
+
+        ->when($filters['priceMin'], fn ($query, $price)
+        => $query->where('price', '>=', $price))
+        ->when($filters['priceMax'], fn ($query, $price)
+         => $query->where('price', '<=', $price))
+        ->when($filters['category'], fn ($query, $category)
+         => $query->whereIn('category_id', $category));
+    }
 }
