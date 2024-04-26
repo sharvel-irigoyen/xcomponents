@@ -12,7 +12,13 @@ class Index extends Component
     public function render()
     {
         $data=[
-            'items'=>Item::where('owner', 'Tienda')->paginate(12),
+            'items'=>Item::where('owner', 'Tienda')
+            ->whereHas('itemPics')
+            ->orWhere(function ($query) {
+                $query->where('owner', 'Tienda')
+                    ->doesntHave('itemPics');
+            })
+            ->paginate(12)
         ];
         return view('livewire.item.index', $data);
     }
