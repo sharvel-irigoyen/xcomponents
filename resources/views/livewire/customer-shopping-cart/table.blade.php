@@ -56,21 +56,36 @@
 
     {{ $shoppingCartDetails->onEachSide(0)->links() }}
 
-    <div class="row justify-content-end">
-        <div class="col col-4">
-            <p class="fs-4 fw-bold text-end">Total: {{ $shoppingCart->total_price }}</p>
-            <div class="mb-3">
-                <label for="formFile" class="form-label">Subir vaucher de pago </label>
-                <input wire:model='vaucher' class="form-control" type="file" id="formFile"
-                    aria-label="Seleccione archivo" accept="image/*">
-            </div>
-        </div>
-
-
-        {{-- <button type="button" onclick="openForm()" class="btn btn-primary btn-lg">
-            Pagar
-        </button> --}}
+    <div class="text-end">
+        <p class="fs-4 fw-bold">Total: USD {{ $shoppingCart->total_price }}</p>
+        <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#register-payment">
+            Registrar pago
+        </button>
     </div>
+    <x-bs.modal id="register-payment" :footer="false" ref="addPaymentModal" @payment-saved.window="addPaymentModal.hide()">
+        <x-slot name="header">
+            <h3 class="fs-2 fw-bold">Registrar pago</h3>
+        </x-slot>
+        <x-slot name="body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="mb-3">
+                        <x-bs.input autofocus autocomplete="on" wire:model.blur='paymentAmount' label="Monto de pago:"
+                            for="payment_amount" :error="$errors->first('paymentAmount')" />
+                        {{-- <x-input.filepond wire:model="paymentFile" :error="$errors->first('paymentFile')" /> --}}
+                        <livewire:dropzone wire:model="paymentFile" :rules="['image', 'mimes:png,jpeg', 'max:10420']" :multiple="false" />
+
+                        <div class="text-end">
+                            <button type="submit" wire:click='addPayment' class="btn btn-outline-success btn-sm">
+                                <span wire:loading wire:target='addPayment' class="spinner-border spinner-border-sm"
+                                    aria-hidden="true"></span>
+                                Registrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </x-slot>
+    </x-bs.modal>
     @push('scripts')
         {{-- <script type="text/javascript" src="{{ config('services.niubiz.url_js') }}"></script>
         <script type="text/javascript">

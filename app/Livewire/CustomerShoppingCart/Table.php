@@ -2,18 +2,23 @@
 
 namespace App\Livewire\CustomerShoppingCart;
 
+use App\Models\Receipt;
 use App\Models\ShoppingCart;
 use App\Models\ShoppingCartDetail;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Http\File;
+use Illuminate\Support\Facades\Storage;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\WithFileUploads;
 use Livewire\WithPagination;
 
 class Table extends Component
 {
     use WithPagination;
     use LivewireAlert;
+    use WithFileUploads;
     protected $listeners = [
         'delete'
     ];
@@ -21,6 +26,11 @@ class Table extends Component
     public ShoppingCartDetail $shoppingCartDetail;
     public $totalPrice;
 
+    #[Validate('required', as: 'vaucher')]
+    public $paymentFile;
+
+    #[Validate('required|numeric|decimal:0,1', as: 'monto de pago')]
+    public $paymentAmount;
     public function deleteConfirmation(ShoppingCartDetail $shoppingCartDetail)
     {
         $this->shoppingCartDetail=$shoppingCartDetail;
@@ -86,35 +96,58 @@ class Table extends Component
         ]);
     }
 
-    public function generateSessionToken()
+    // public function generateSessionToken()
+    // {
+    //     $auth= base64_encode(config('services.niubiz.user'). ':' . config('services.niubiz.password'));
+    //     $accessToken=Http::withHeaders([
+    //         'Authorization' =>"Basic $auth",
+    //     ])
+    //     ->get(config('services.niubiz.url_api'). '/api.security/v1/security')
+    //     ->body();
+
+    //     $sessionToken=Http::withHeaders([
+    //         'Authorization' =>$accessToken,
+    //         'Content-Type' => 'application/json',
+    //     ])
+    //     ->post(config('services.niubiz.url_api').'/api.ecommerce/v2/ecommerce/token/session/'.config('services.niubiz.merchant_id'), [
+    //         'channel' =>'web',
+    //         'amount' =>100,
+    //         "antifraud"=> [
+    //             "clientIp"=>request()->ip(),
+    //             "merchantDefineData"=> [
+    //             "MDD4"=> auth()->user()->email,
+    //             "MDD21"=> 0,
+    //             "MDD32"=> auth()->user()->id,
+    //             "MDD75"=> "Registrado",
+    //             "MDD77"=> now()->diffInDays(auth()->user()->created_at)+1,
+    //             ]
+    //         ]
+    //     ])->json();
+
+    //     return $sessionToken['sessionKey'];
+    // }
+    public function addPayment()
     {
-        $auth= base64_encode(config('services.niubiz.user'). ':' . config('services.niubiz.password'));
-        $accessToken=Http::withHeaders([
-            'Authorization' =>"Basic $auth",
-        ])
-        ->get(config('services.niubiz.url_api'). '/api.security/v1/security')
-        ->body();
+        $this->validate();
+        $receipt=Receipt::create([
+            'user_id' => Auth::user()->id,
+            'shopping_cart_id' => Auth::user()->shoppingCart->id,
+            'issue_date'=>now(),
+        ]);
 
-        $sessionToken=Http::withHeaders([
-            'Authorization' =>$accessToken,
-            'Content-Type' => 'application/json',
-        ])
-        ->post(config('services.niubiz.url_api').'/api.ecommerce/v2/ecommerce/token/session/'.config('services.niubiz.merchant_id'), [
-            'channel' =>'web',
-            'amount' =>100,
-            "antifraud"=> [
-                "clientIp"=>request()->ip(),
-                "merchantDefineData"=> [
-                "MDD4"=> auth()->user()->email,
-                "MDD21"=> 0,
-                "MDD32"=> auth()->user()->id,
-                "MDD75"=> "Registrado",
-                "MDD77"=> now()->diffInDays(auth()->user()->created_at)+1,
-                ]
-            ]
-        ])->json();
-
-        return $sessionToken['sessionKey'];
+        $path = Storage::disk('public')->putFile('payment_vauchers', new File($this->paymentFile[0]['path']));
+        $receipt->paymenyDetails()->create([
+            'amount' => $this->paymentAmount,
+            'status' =>0,
+            'vaucher_file' => basename($path),
+        ]);
+        $this->dispatch('payment-saved');
+        $this->alert('success', 'Se registro correctamente! Pronto confirmaremos tu pago', [
+            'toast' => false,
+            'position' => 'center',
+            'timerProgressBar' => true,
+            'timer' => 2000,
+        ]);
     }
     public function render()
     {
@@ -123,7 +156,7 @@ class Table extends Component
             'shoppingCartDetails'=>ShoppingCart::where('user_id', Auth::user()->id)->first()->shoppingCartDetails()->orderBy('updated_at', 'desc')
             ->paginate(10),
             'shoppingCart'=>ShoppingCart::where('user_id', Auth::user()->id)->first(),
-            'sessionToken'=>$this->generateSessionToken(),
+            // 'sessionToken'=>$this->generateSessionToken(),
         ];
         return view('livewire.customer-shopping-cart.table', $data);
     }

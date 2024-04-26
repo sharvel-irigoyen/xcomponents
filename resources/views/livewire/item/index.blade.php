@@ -10,8 +10,8 @@
                 @endif
 
                 <div class="card-body">
-                    <h5 class="card-title truncate-2">{{ $item->category->name }}</h5>
-                    <h6>{{ $item->name }}</h6>
+                    <h5 class="card-title">{{ $item->category->name }}</h5>
+                    <h6 class="truncate-2">{{ $item->name }}</h6>
                     <p class="card-text truncate-5">{{ $item->description }}.</p>
 
 

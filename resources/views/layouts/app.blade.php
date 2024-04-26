@@ -25,6 +25,7 @@
 
 
     <!-- Styles -->
+    @stack('styles')
     @livewireStyles
 </head>
 

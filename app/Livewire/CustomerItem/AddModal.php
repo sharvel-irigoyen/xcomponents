@@ -24,10 +24,10 @@ class AddModal extends Component
     #[Validate('required', as: 'descripción')]
     public $description;
 
-    #[Validate('required', as: 'stock')]
+    #[Validate('required | numeric | decimal:0', as: 'stock')]
     public $stock;
 
-    #[Validate('required', as: 'precio')]
+    #[Validate('required | numeric | decimal:0,1', as: 'precio')]
     public $price;
 
     public array $photos = [];
