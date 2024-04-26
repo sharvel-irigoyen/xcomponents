@@ -17,7 +17,7 @@
 
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <span class="text-secondary">Stock: {{ $item->stock }}</span>
-                        <span class="text-danger fs-4 fw-bold">S/.{{ $item->price }}</span>
+                        <span class="text-danger fs-4 fw-bold">USD {{ $item->price }}</span>
                     </div>
 
                     <button data-bs-toggle="modal" data-bs-target="#show-modal-item-{{ $item->id }}" type="button"

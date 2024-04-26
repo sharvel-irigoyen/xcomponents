@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\Item;
 use App\Models\ItemPic;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Faker\Factory as FakerFactory;
 use Illuminate\Support\Facades\Http;

@@ -6,11 +6,11 @@
         </x-slot>
         <x-slot name="body">
             <div class="row align-items-center">
-                <div class="col-lg-6 fs-5">
-                    <p class="">Categoría: {{ $item->category->name }}</p>
-                    <p>Descripción: {{ $item->description }}</p>
-                    <p>Stock: {{ $item->stock }}</p>
-                    <p>Precio: S/.{{ $item->price }}</p>
+                <div class="col-lg-6 fs-6">
+                    <p><b>Categoría:</b> {{ $item->category->name }}</p>
+                    <p><b>Descripción: </b>{{ $item->description }}</p>
+                    <p><b>Stock:</b> {{ $item->stock }}</p>
+                    <p><b>Precio:</b> USD {{ $item->price }}</p>
                     @auth
                         <div class="text-center mt-5 mb-3 mb-lg-0">
                             <button wire:click='addCart({{ $item->id }})' type="button" class="btn btn-success"><i
@@ -23,8 +23,8 @@
                     <div id="carousel-{{ $item->id }}" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner shadow rounded-4">
                             @forelse ($item->itemPics as $itemPic)
-                                <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
-                                    <img src="{{'storage/photos/' . $itemPic->url }}" class="d-block w-100" alt="...">
+                                <div class="carousel-item bg-white {{ $loop->first ? 'active' : '' }}">
+                                    <img src="{{'storage/photos/' . $itemPic->url }}" class="d-block w-100 p-5" alt="...">
                                 </div>
                             @empty
                                 <div class="carousel-item active  shadow rounded-4">
