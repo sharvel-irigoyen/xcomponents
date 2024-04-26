@@ -5,6 +5,7 @@ namespace App\Livewire\Item;
 use App\Models\Item;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Database\Eloquent\Builder;
 
 class Index extends Component
 {
@@ -13,11 +14,8 @@ class Index extends Component
     {
         $data=[
             'items'=>Item::where('owner', 'Tienda')
-            ->whereHas('itemPics')
-            ->orWhere(function ($query) {
-                $query->where('owner', 'Tienda')
-                    ->doesntHave('itemPics');
-            })
+            ->withCount('itemPics')
+            ->orderByRaw('ISNULL(item_pics_count), item_pics_count DESC')
             ->paginate(12)
         ];
         return view('livewire.item.index', $data);
