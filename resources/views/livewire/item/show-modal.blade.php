@@ -24,7 +24,7 @@
                         <div class="carousel-inner shadow rounded-4">
                             @forelse ($item->itemPics as $itemPic)
                                 <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
-                                    <img src="{{ $itemPic->url }}" class="d-block w-100" alt="...">
+                                    <img src="{{'storage/photos/' . $itemPic->url }}" class="d-block w-100" alt="...">
                                 </div>
                             @empty
                                 <div class="carousel-item active  shadow rounded-4">

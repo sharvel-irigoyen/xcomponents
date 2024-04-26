@@ -23,7 +23,13 @@
                 @forelse ($customerItems as $customerItem)
                     <tr wire:key="{{ $customerItem->id }}">
                         <th>{{ $customerItem->item->id }}</th>
-                        <th><img style="width: 50px" src="{{ asset($customerItem->item->itemPics->first()?->url) }}" />
+                        <th>
+                            @if ($customerItem->item->itemPics->first()?->url)
+                                <img style="width: 50px"
+                                    src="{{ asset('storage/photos/' . $customerItem->item->itemPics->first()?->url) }}" />
+                            @else
+                                <img style="width: 50px" src="{{ asset('img/not-found.jpeg') }}" class="card-img-top" alt="...">
+                            @endif
                         </th>
                         <th>{{ $customerItem->item->category->name }}</th>
                         <th>{{ $customerItem->item->name }}</th>
@@ -33,15 +39,17 @@
                         <td>
                             <button wire:click="addCart({{ $customerItem->id }})" type="button"
                                 class="btn btn-sm btn-outline-warning"><i class="fa-solid fa-cart-plus"></i></button>
-                            <button data-bs-toggle="modal" data-bs-target="#edit-modal-customer-item-{{ $customerItem->id }}"
-                                type="button" class="btn btn-sm btn-outline-primary"><i
+                            <button data-bs-toggle="modal"
+                                data-bs-target="#edit-modal-customer-item-{{ $customerItem->id }}" type="button"
+                                class="btn btn-sm btn-outline-primary"><i
                                     class="fa-regular fa-pen-to-square"></i></button>
 
                             <button wire:click="deleteConfirmation({{ $customerItem->id }})" type="button"
                                 class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-trash-can"></i></button>
                         </td>
 
-                        <livewire:customer-item.edit-modal :$customerItem :key="'edit-' . $customerItem->id" @customer-item-saved="$refresh" />
+                        <livewire:customer-item.edit-modal :$customerItem :key="'edit-' . $customerItem->id"
+                            @customer-item-saved="$refresh" />
                     </tr>
                 @empty
                     <tr>

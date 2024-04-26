@@ -15,25 +15,25 @@ class CategorySeeder extends Seeder
     {
         $categories = [
             [
-                'name' => 'Laptops y Notebooks',
+                'name' => 'Desktop & All-in-One Computers',
             ],
             [
-                'name' => 'Computadoras de Escritorio',
+                'name' => 'Digital Cameras',
             ],
             [
-                'name' => 'Tabletas y Convertibles',
+                'name' => 'Headphones',
             ],
             [
-                'name' => 'Componentes de Computadora',
+                'name' => 'iPad, Tablets & E-Readers',
             ],
             [
-                'name' => 'Periféricos',
+                'name' => 'Laptops',
             ],
             [
-                'name' => 'Accesorios',
+                'name' => 'Portable & Wireless Speakers',
             ],
             [
-                'name' => 'Software',
+                'name' => 'TVs',
             ],
         ];
 

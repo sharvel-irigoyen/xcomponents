@@ -5,6 +5,8 @@ namespace App\Livewire\CustomerItem;
 use App\Models\Category;
 use App\Models\Item;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\File;
+use Illuminate\Support\Facades\Storage;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -28,6 +30,8 @@ class AddModal extends Component
     #[Validate('required', as: 'precio')]
     public $price;
 
+    public array $photos = [];
+
     public function add()
     {
         $this->validate();
@@ -40,10 +44,19 @@ class AddModal extends Component
             'price' => $this->price,
             'owner'=>'Cliente',
         ]);
+
         $item->customerItems()->create([
             'user_id' => Auth::user()->id,
             'item_id' => $item->id,
         ]);
+
+        foreach ($this->photos as $photo) {
+            $path = Storage::disk('public')->putFile('photos', new File($photo['path']));
+            $item->itemPics()->create([
+                'url'=> basename($path),
+            ]);
+        }
+
         $item->delete();
         $this->reset();
 

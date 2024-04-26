@@ -61,6 +61,6 @@ class EditModal extends Component
         $data=[
             'categories' => Category::all(),
         ];
-        return view('livewire.customer-item.edcarit-modal',$data);
+        return view('livewire.customer-item.edit-modal', $data);
     }
 }

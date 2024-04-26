@@ -22,14 +22,21 @@
                 @forelse ($shoppingCartDetails as $shoppingCartDetail)
                     <tr wire:key="{{ $shoppingCartDetail->id }}">
                         <th>{{ $shoppingCartDetail->item->id }}</th>
-                        <th><img style="width: 50px"
-                                src="{{ asset($shoppingCartDetail->item->itemPics->first()?->url) }}" />
+                        <th>
+                            @if ($shoppingCartDetail->item->itemPics->first()?->url)
+                                <img style="width: 50px"
+                                    src="{{ asset('storage/photos/' . $shoppingCartDetail->item->itemPics->first()?->url) }}" />
+                            @else
+                                <img style="width: 50px" src="{{ asset('img/not-found.jpeg') }}" class="card-img-top"
+                                    alt="...">
+                            @endif
                         </th>
                         <th>{{ $shoppingCartDetail->item->category->name }}</th>
                         <th>{{ $shoppingCartDetail->item->name }}</th>
                         <th>{{ $shoppingCartDetail->item->description }}</th>
                         <th>{{ $shoppingCartDetail->item->stock }}</th>
-                        <th class="{{ $shoppingCartDetail->item->owner == 'Cliente' ? 'text-danger' : 'text-success' }}">
+                        <th
+                            class="{{ $shoppingCartDetail->item->owner == 'Cliente' ? 'text-danger' : 'text-success' }}">
                             {{ $shoppingCartDetail->item->owner == 'Cliente' ? '-' : '+' }}{{ $shoppingCartDetail->item->price }}
                         </th>
                         <td>
@@ -49,14 +56,23 @@
 
     {{ $shoppingCartDetails->onEachSide(0)->links() }}
 
-    <div class="text-end">
-        <p class="fs-4 fw-bold">Total: {{ $shoppingCart->total_price }}</p>
-        <button type="button" onclick="openForm()" class="btn btn-primary btn-lg">
+    <div class="row justify-content-end">
+        <div class="col col-4">
+            <p class="fs-4 fw-bold text-end">Total: {{ $shoppingCart->total_price }}</p>
+            <div class="mb-3">
+                <label for="formFile" class="form-label">Subir vaucher de pago </label>
+                <input wire:model='vaucher' class="form-control" type="file" id="formFile"
+                    aria-label="Seleccione archivo" accept="image/*">
+            </div>
+        </div>
+
+
+        {{-- <button type="button" onclick="openForm()" class="btn btn-primary btn-lg">
             Pagar
-        </button>
+        </button> --}}
     </div>
     @push('scripts')
-        <script type="text/javascript" src="{{ config('services.niubiz.url_js') }}"></script>
+        {{-- <script type="text/javascript" src="{{ config('services.niubiz.url_js') }}"></script>
         <script type="text/javascript">
             function openForm() {
                 VisanetCheckout.configure({
@@ -76,6 +92,6 @@
                 });
                 VisanetCheckout.open();
             }
-        </script>
+        </script> --}}
     @endpush
 </div>

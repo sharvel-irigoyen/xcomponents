@@ -20,15 +20,11 @@ class ItemPicFactory extends Factory
     public function definition(): array
     {
         $item = Item::pluck('id')->toArray();
-        $itemDirectory = storage_path('app/public/items');
+        $itemDirectory = storage_path('app/public/photos');
         if (!is_dir($itemDirectory)) {
             mkdir($itemDirectory, 0777, true);
         }
-        $itemPath = $this->faker->image($itemDirectory, 600, 600);
         return [
-            'item_id' => fake()->randomElement($item),
-            'url' => $this->faker->imageUrl(600,600),
-            // 'url' => basename($itemPath),
         ];
     }
 }

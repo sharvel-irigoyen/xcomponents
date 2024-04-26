@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')->constrained()->onUpdate('cascade')->onDelete('restrict');
-            $table->string('name', 100);
+            $table->text('name');
             $table->text('description')->nullable();
             $table->integer('stock')->unsigned();
             $table->decimal('price', 10, 2);
