@@ -34,12 +34,10 @@
                 <!-- Settings Dropdown -->
                 @auth
                     <ul class="navbar-nav me-auto">
-                        <x-nav-link class="text-white" href="{{ route('user-items') }}" :active="request()->routeIs('user-items')"
-                            wire:navigate.hover>
+                        <x-nav-link class="text-white" href="{{ route('user-items') }}" :active="request()->routeIs('user-items')">
                             <i class="fa-solid fa-table-list me-1"></i>Mis productos
                         </x-nav-link>
-                        <x-nav-link class="text-white" href="{{ route('user.shopping.cart') }}" :active="request()->routeIs('user.shopping.cart')"
-                            wire:navigate.hover>
+                        <x-nav-link class="text-white" href="{{ route('user.shopping.cart') }}" :active="request()->routeIs('user.shopping.cart')">
                             <i class="fa-solid fa-cart-shopping me-2"></i>Carrito
                         </x-nav-link>
                     </ul>
