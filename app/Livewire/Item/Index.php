@@ -20,7 +20,8 @@ class Index extends Component
         'category' => [],
     ];
 
-    public function updatedFilters(){
+    public function updatedFilters()
+    {
         $this->resetPage();
     }
     public function render()
@@ -31,7 +32,8 @@ class Index extends Component
             // ->orderByRaw('ISNULL(item_pics_count), item_pics_count DESC')
             // ->paginate(12)
             'categories' =>Category::all(),
-            'items'=>Item::filter($this->filters)->paginate(12)
+            'items'=>Item::filter($this->filters)->where('owner', 'Tienda')->withCount('itemPics')
+            ->orderByRaw('ISNULL(item_pics_count), item_pics_count DESC')->paginate(12)
         ];
         return view('livewire.item.index', $data);
     }

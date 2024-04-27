@@ -19,7 +19,7 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse ($shoppingCartDetails as $shoppingCartDetail)
+                @forelse ($shoppingCartDetails ?? [] as $shoppingCartDetail)
                     <tr wire:key="{{ $shoppingCartDetail->id }}">
                         <th>{{ $shoppingCartDetail->item->id }}</th>
                         <th>
@@ -54,15 +54,16 @@
         </table>
     </div>
 
-    {{ $shoppingCartDetails->onEachSide(0)->links() }}
+    {{ $shoppingCartDetails?->onEachSide(0)->links() }}
 
     <div class="text-end">
-        <p class="fs-4 fw-bold">Total: USD {{ $shoppingCart->total_price }}</p>
+        <p class="fs-4 fw-bold">Total: USD {{ $shoppingCart->total_price ?? 0 }}</p>
         <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#register-payment">
             Registrar pago
         </button>
     </div>
-    <x-bs.modal id="register-payment" :footer="false" ref="addPaymentModal" @payment-saved.window="addPaymentModal.hide()">
+    <x-bs.modal id="register-payment" :footer="false" ref="addPaymentModal"
+        @payment-saved.window="addPaymentModal.hide()">
         <x-slot name="header">
             <h3 class="fs-2 fw-bold">Registrar pago</h3>
         </x-slot>

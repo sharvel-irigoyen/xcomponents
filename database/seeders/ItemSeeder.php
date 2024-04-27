@@ -18,7 +18,6 @@ class ItemSeeder extends Seeder
     public function run(): void
     {
         $faker = FakerFactory::create();
-        // Obtener el mapeo de categoría a ID de la API
         $categoryIdApiData = [
             1 => 'abcat0501000',
             2 => 'abcat0401000',
@@ -27,7 +26,6 @@ class ItemSeeder extends Seeder
             5 => 'abcat0502000',
             6 => 'pcmcat310200050004',
             7 => 'abcat0101000',
-            // Agrega más mapeos según sea necesario para todas tus categorías locales
         ];
 
         for ($i = 0; $i < 600; $i++) {
@@ -44,7 +42,6 @@ class ItemSeeder extends Seeder
                 $imageData = file_get_contents($imageUrl);
                 $imageName = uniqid('item_') . '.' . pathinfo($imageUrl, PATHINFO_EXTENSION);
                 Storage::disk('public')->put('photos/' . $imageName, $imageData);
-                // Storage::put('items/' . $imageName, $imageData);
 
                 $item = Item::create([
                     'category_id' => $categoryId,

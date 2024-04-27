@@ -24,7 +24,7 @@ class Table extends Component
     ];
 
     public ShoppingCartDetail $shoppingCartDetail;
-    public $totalPrice;
+    public $totalPrice=0;
 
     #[Validate('required', as: 'vaucher')]
     public $paymentFile;
@@ -85,15 +85,18 @@ class Table extends Component
     public function updatePrice()
     {
 
-        $shoppingCartDetails = ShoppingCart::where('user_id', Auth::user()->id)->first()->shoppingCartDetails;
+        $shoppingCartDetails = ShoppingCart::where('user_id', Auth::user()->id)->first()?->shoppingCartDetails;
 
-        $totalStorePrice = $shoppingCartDetails->where('item.owner', 'Tienda')->sum('item.price');
-        $totalCustomerPrice =  $shoppingCartDetails->where('item.owner', 'Cliente')->sum('item.price');
+
+        $totalStorePrice = $shoppingCartDetails?->where('item.owner', 'Tienda')->sum('item.price')?? 0;
+        $totalCustomerPrice =  $shoppingCartDetails?->where('item.owner', 'Cliente')->sum('item.price')??0;
 
         $totalPrice = $totalStorePrice - $totalCustomerPrice;
-        $shoppingCartDetails->first()->shoppingCart->update([
+        $shoppingCartDetails?->first()->shoppingCart->update([
             'total_price' => $totalPrice
         ]);
+
+
     }
 
     // public function generateSessionToken()
@@ -153,7 +156,7 @@ class Table extends Component
     {
         $this->updatePrice();
         $data=[
-            'shoppingCartDetails'=>ShoppingCart::where('user_id', Auth::user()->id)->first()->shoppingCartDetails()->orderBy('updated_at', 'desc')
+            'shoppingCartDetails'=>ShoppingCart::where('user_id', Auth::user()->id)->first()?->shoppingCartDetails()->orderBy('updated_at', 'desc')
             ->paginate(10),
             'shoppingCart'=>ShoppingCart::where('user_id', Auth::user()->id)->first(),
             // 'sessionToken'=>$this->generateSessionToken(),
