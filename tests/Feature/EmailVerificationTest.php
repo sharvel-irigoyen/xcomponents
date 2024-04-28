@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
@@ -17,6 +18,7 @@ class EmailVerificationTest extends TestCase
 
     public function test_email_verification_screen_can_be_rendered(): void
     {
+        $this->seed(RoleSeeder::class);
         if (! Features::enabled(Features::emailVerification())) {
             $this->markTestSkipped('Email verification not enabled.');
         }
@@ -30,6 +32,7 @@ class EmailVerificationTest extends TestCase
 
     public function test_email_can_be_verified(): void
     {
+        $this->seed(RoleSeeder::class);
         if (! Features::enabled(Features::emailVerification())) {
             $this->markTestSkipped('Email verification not enabled.');
         }
@@ -54,6 +57,7 @@ class EmailVerificationTest extends TestCase
 
     public function test_email_can_not_verified_with_invalid_hash(): void
     {
+        $this->seed(RoleSeeder::class);
         if (! Features::enabled(Features::emailVerification())) {
             $this->markTestSkipped('Email verification not enabled.');
         }

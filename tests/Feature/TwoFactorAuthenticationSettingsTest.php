@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Fortify\Features;
 use Laravel\Jetstream\Http\Livewire\TwoFactorAuthenticationForm;
@@ -15,6 +16,7 @@ class TwoFactorAuthenticationSettingsTest extends TestCase
 
     public function test_two_factor_authentication_can_be_enabled(): void
     {
+        $this->seed(RoleSeeder::class);
         if (! Features::canManageTwoFactorAuthentication()) {
             $this->markTestSkipped('Two factor authentication is not enabled.');
         }
@@ -34,6 +36,7 @@ class TwoFactorAuthenticationSettingsTest extends TestCase
 
     public function test_recovery_codes_can_be_regenerated(): void
     {
+        $this->seed(RoleSeeder::class);
         if (! Features::canManageTwoFactorAuthentication()) {
             $this->markTestSkipped('Two factor authentication is not enabled.');
         }
@@ -56,6 +59,7 @@ class TwoFactorAuthenticationSettingsTest extends TestCase
 
     public function test_two_factor_authentication_can_be_disabled(): void
     {
+        $this->seed(RoleSeeder::class);
         if (! Features::canManageTwoFactorAuthentication()) {
             $this->markTestSkipped('Two factor authentication is not enabled.');
         }

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Providers\RouteServiceProvider;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Fortify\Features;
 use Laravel\Jetstream\Jetstream;
@@ -36,15 +37,19 @@ class RegistrationTest extends TestCase
 
     public function test_new_users_can_register(): void
     {
+        $this->seed(RoleSeeder::class);
         if (! Features::enabled(Features::registration())) {
             $this->markTestSkipped('Registration support is not enabled.');
         }
 
         $response = $this->post('/register', [
             'name' => 'Test User',
-            'email' => 'test@example.com',
+            'lastname' => 'Test User',
+            'email' => 'test@examplee.com',
+            'phone' => '999999998',
             'password' => 'password',
             'password_confirmation' => 'password',
+            'role_id' => '2',
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature(),
         ]);
 

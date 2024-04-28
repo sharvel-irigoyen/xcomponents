@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Jetstream\Features;
 use Laravel\Jetstream\Http\Livewire\ApiTokenManager;
@@ -15,6 +16,7 @@ class CreateApiTokenTest extends TestCase
 
     public function test_api_tokens_can_be_created(): void
     {
+        $this->seed(RoleSeeder::class);
         if (! Features::hasApiFeatures()) {
             $this->markTestSkipped('API support is not enabled.');
         }
