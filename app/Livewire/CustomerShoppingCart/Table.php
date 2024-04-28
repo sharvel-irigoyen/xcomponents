@@ -87,7 +87,7 @@ class Table extends Component
 
         $shoppingCartDetails = ShoppingCart::where('user_id', Auth::user()->id)->first()?->shoppingCartDetails;
 
-        if ($shoppingCartDetails->isEmpty()) {
+        if (!$shoppingCartDetails->isEmpty()) {
             $totalStorePrice = $shoppingCartDetails?->where('item.owner', 'Tienda')->sum('item.price')?? 0;
             $totalCustomerPrice =  $shoppingCartDetails?->where('item.owner', 'Cliente')->sum('item.price')??0;
 
