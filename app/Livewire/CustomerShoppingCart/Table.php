@@ -87,13 +87,17 @@ class Table extends Component
 
         $shoppingCartDetails = ShoppingCart::where('user_id', Auth::user()->id)->first()?->shoppingCartDetails;
 
-        if ($shoppingCartDetails) {
+        if ($shoppingCartDetails->isEmpty()) {
             $totalStorePrice = $shoppingCartDetails?->where('item.owner', 'Tienda')->sum('item.price')?? 0;
             $totalCustomerPrice =  $shoppingCartDetails?->where('item.owner', 'Cliente')->sum('item.price')??0;
 
             $totalPrice = $totalStorePrice - $totalCustomerPrice;
-            $shoppingCartDetails?->first()->shoppingCart->update([
+            $shoppingCartDetails?->first()?->shoppingCart->update([
                 'total_price' => $totalPrice
+            ]);
+        } else {
+            ShoppingCart::where('user_id', Auth::user()->id)->first()->update([
+                'total_price' => 0
             ]);
         }
     }
