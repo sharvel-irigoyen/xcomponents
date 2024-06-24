@@ -15,24 +15,31 @@ class CategorySeeder extends Seeder
     {
         $categories = [
             [
+                'id'   =>  1,
                 'name' => 'Desktop & All-in-One Computers',
             ],
             [
+                'id'   =>  2,
                 'name' => 'Digital Cameras',
             ],
             [
+                'id'   =>  3,
                 'name' => 'Headphones',
             ],
             [
+                'id'   =>  4,
                 'name' => 'iPad, Tablets & E-Readers',
             ],
             [
+                'id'   =>  5,
                 'name' => 'Laptops',
             ],
             [
+                'id'   =>  6,
                 'name' => 'Portable & Wireless Speakers',
             ],
             [
+                'id'   =>  7,
                 'name' => 'TVs',
             ],
         ];

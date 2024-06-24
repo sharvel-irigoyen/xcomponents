@@ -17,6 +17,7 @@ class ItemSeeder extends Seeder
      */
     public function run(): void
     {
+        $n_items = env(APP_ENV)!='testing' ? 100 : 3;
         $faker = FakerFactory::create();
         $categoryIdApiData = [
             1 => 'abcat0501000',
@@ -28,7 +29,7 @@ class ItemSeeder extends Seeder
             7 => 'abcat0101000',
         ];
 
-        for ($i = 0; $i < 600; $i++) {
+        for ($i = 0; $i < $n_items; $i++) {
             $categoryId = Category::inRandomOrder()->value('id');
             $categoryIdApi = $categoryIdApiData[$categoryId];
 
@@ -39,22 +40,27 @@ class ItemSeeder extends Seeder
 
                 // Descargar la imagen y guardarla localmente
                 $imageUrl = $product['image'];
-                $imageData = file_get_contents($imageUrl);
-                $imageName = uniqid('item_') . '.' . pathinfo($imageUrl, PATHINFO_EXTENSION);
-                Storage::disk('public')->put('photos/' . $imageName, $imageData);
+                if (!empty($imageUrl)) {
+                    $imageData = file_get_contents($imageUrl);
+                    $imageName = uniqid('item_') . '.' . pathinfo($imageUrl, PATHINFO_EXTENSION);
+                    Storage::disk('public')->put('photos/' . $imageName, $imageData);
 
-                $item = Item::create([
-                    'category_id' => $categoryId,
-                    'name' => $product['name'],
-                    'description' => $product['longDescription'] ?? '',
-                    'stock' => rand(0, 100),
-                    'price' => $product['regularPrice'] ?? 0,
-                    'owner' => ['Tienda', 'Cliente'][rand(0, 1)],
-                ]);
+                    $item = Item::create([
+                        'category_id' => $categoryId,
+                        'name' => $product['name'],
+                        'description' => $product['longDescription'] ?? '',
+                        'stock' => rand(0, 100),
+                        'price' => $product['regularPrice'] ?? 0,
+                        'owner' => ['Tienda', 'Cliente'][rand(0, 1)],
+                    ]);
 
-                // Crear un nuevo ItemPic con el nombre del archivo
-                $itemPic = new ItemPic(['url' => $imageName]);
-                $item->itemPics()->save($itemPic);
+                    // Crear un nuevo ItemPic con el nombre del archivo
+                    $itemPic = new ItemPic(['url' => $imageName]);
+                    $item->itemPics()->save($itemPic);
+                } else {
+                    // Manejar el caso donde la URL de la imagen está vacía
+                    continue; // O podrías agregar alguna lógica para manejarlo
+                }
             } else {
                 Item::create([
                     'category_id' => $categoryId,

@@ -10,9 +10,11 @@ use Illuminate\Support\Facades\Storage;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class AddModal extends Component
 {
+    use WithFileUploads;
     use LivewireAlert;
 
     #[Validate('required', as: 'categoría')]
@@ -51,7 +53,7 @@ class AddModal extends Component
         ]);
 
         foreach ($this->photos as $photo) {
-            $path = Storage::disk('public')->putFile('photos', new File($photo['path']));
+            $path = Storage::disk('public')->putFile('photos', $photo);
             $item->itemPics()->create([
                 'url'=> basename($path),
             ]);

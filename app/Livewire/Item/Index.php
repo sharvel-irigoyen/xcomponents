@@ -27,10 +27,6 @@ class Index extends Component
     public function render()
     {
         $data=[
-            // 'items'=>Item::where('owner', 'Tienda')
-            // ->withCount('itemPics')
-            // ->orderByRaw('ISNULL(item_pics_count), item_pics_count DESC')
-            // ->paginate(12)
             'categories' =>Category::all(),
             'items'=>Item::filter($this->filters)->where('owner', 'Tienda')->withCount('itemPics')
             ->orderByRaw('ISNULL(item_pics_count), item_pics_count DESC')->paginate(12)

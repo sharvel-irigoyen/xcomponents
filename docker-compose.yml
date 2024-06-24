@@ -1,0 +1,57 @@
+version: "3.9"
+
+networks:
+  laravel:
+    driver: bridge
+
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: xcomponents-nginx
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - .:/var/www/xcomponents:delegated
+    depends_on:
+      - php
+      - mongo
+    networks:
+      - laravel
+
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: xcomponents-php
+    restart: unless-stopped
+    tty: true
+    expose:
+      - "9000"
+    volumes:
+      - .:/var/www/xcomponents:delegated
+    networks:
+      - laravel
+
+  db:
+    image: mysql:8.0
+    container_name: xcomponents-mysql
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: xcomponents
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - laravel
+
+volumes:
+  dbdata:
+    driver: local
