@@ -17,7 +17,7 @@ class ItemSeeder extends Seeder
      */
     public function run(): void
     {
-        $n_items = 100;
+        $n_items = 30;
         $faker = FakerFactory::create();
         $categoryIdApiData = [
             1 => 'abcat0501000',
