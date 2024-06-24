@@ -18,7 +18,6 @@ services:
       - .:/var/www/xcomponents:delegated
     depends_on:
       - php
-      - mongo
     networks:
       - laravel
 
